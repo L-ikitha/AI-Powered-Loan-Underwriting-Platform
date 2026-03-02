@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Loan Decision</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Loan Decision</h2>
+
+    <p><strong>Status:</strong> {{ result }}</p>
+    <p><strong>Confidence:</strong> {{ confidence }}%</p>
+
+    {% if reasons %}
+    <p><strong>Reasons:</strong></p>
+    <ul>
+      {% for r in reasons %}
+        <li>{{ r }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if steps %}
+    <p><strong>Next Steps:</strong></p>
+    <ul>
+      {% for s in steps %}
+        <li>{{ s }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    <br>
+    <a href="/">Apply Again</a>
+  </div>
+</body>
+</html>

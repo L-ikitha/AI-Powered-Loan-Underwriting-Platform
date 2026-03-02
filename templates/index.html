@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Smart Loan – Voice Assistant</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Smart Loan Approval System</h2>
+
+    <div class="lang">
+      <label>Language: </label>
+      <select id="lang">
+        <option value="en-IN">English (India)</option>
+        <option value="hi-IN">हिन्दी (Hindi)</option>
+      </select>
+    </div>
+
+    <form id="loanForm" onsubmit="return submitForm(event)">
+      <label>Loan Amount (₹):</label>
+      <input type="number" id="amount" name="amount" placeholder="20000">
+
+      <label>Monthly Income (₹):</label>
+      <input type="number" id="income" name="income" required placeholder="30000">
+
+      <label>Credit Score:</label>
+      <input type="number" id="credit_score" name="credit_score" required placeholder="700">
+
+      <label>Debt-to-Income Ratio (0 - 1):</label>
+      <input type="number" step="0.01" id="dti" name="debt_to_income_ratio" required placeholder="0.30">
+
+      <button type="submit">Check Eligibility</button>
+    </form>
+
+    <div class="voice">
+      <button id="voiceStart">🎙 Start Voice</button>
+      <div id="voiceStatus"></div>
+    </div>
+
+    <div id="decision" class="decision" style="display:none;"></div>
+  </div>
+
+<script>
+let voiceActive = false;
+
+async function submitForm(e) {
+    if (!voiceActive) e.preventDefault();
+
+    const payload = {
+        income: Number(document.getElementById('income').value),
+        credit_score: Number(document.getElementById('credit_score').value),
+        debt_to_income_ratio: Number(document.getElementById('dti').value)
+    };
+
+    const res = await fetch("/api/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+
+    // Store result in session via browser redirect
+    const redirectUrl = `/result?status=${data.approved}&conf=${data.confidence}&reasons=${encodeURIComponent(JSON.stringify(data.explanation.reasons))}&steps=${encodeURIComponent(JSON.stringify(data.explanation.suggestions))}`;
+    
+    if (!voiceActive) {
+        window.location.href = redirectUrl;
+    }
+
+    return false;
+}
+</script>
+
+
+<script src="/static/voice.js"></script>
+</body>
+</html>

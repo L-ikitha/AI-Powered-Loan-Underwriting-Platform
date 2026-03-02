@@ -1,0 +1,30 @@
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #74b9ff, #a29bfe);
+  color: #2d3436;
+  text-align: center;
+  padding-top: 50px;
+}
+.container, .result-box {
+  background: white;
+  border-radius: 10px;
+  padding: 30px;
+  margin: auto;
+  width: 300px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+input, button {
+  margin: 10px 0;
+  width: 100%;
+  padding: 8px;
+}
+button {
+  background-color: #0984e3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #74b9ff;
+}
